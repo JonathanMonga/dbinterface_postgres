@@ -7,7 +7,7 @@ import (
 
 	di "github.com/Ulbora/dbinterface"
 
-	//Required
+	// require
 	_ "github.com/lib/pq"
 )
 
