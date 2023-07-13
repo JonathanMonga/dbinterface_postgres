@@ -6,9 +6,6 @@ import (
 	"log"
 
 	di "github.com/Ulbora/dbinterface"
-
-	// require
-	_ "github.com/lib/pq"
 )
 
 // PgDB PgDB
@@ -127,6 +124,7 @@ func (m *PgDB) Get(query string, args ...interface{}) *di.DbRow {
 		defer stmtGet.Close()
 		rows, err := stmtGet.Query(args...)
 		defer rows.Close()
+
 		if err != nil {
 			log.Println("Get err: ", err)
 		} else {

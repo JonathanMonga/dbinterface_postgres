@@ -120,8 +120,7 @@ func (m *PgDBMock) Connect() bool {
 
 // GetNewDatabase GetNewDatabase
 func (m *PgDBMock) GetNewDatabase() di.Database {
-	var db di.Database
-	db = m
+	db := m
 	return db
 }
 
