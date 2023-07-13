@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	di "github.com/Ulbora/dbinterface"
@@ -14,6 +15,7 @@ import (
 type MyDB struct {
 	Host     string
 	User     string
+	Port     string
 	Password string
 	Database string
 	db       *sql.DB
@@ -23,8 +25,11 @@ type MyDB struct {
 // Connect Connect
 func (m *MyDB) Connect() bool {
 	var rtn = false
-	var conStr = m.User + ":" + m.Password + "@tcp(" + m.Host + ")/" + m.Database
-	m.db, m.err = sql.Open("mysql", conStr)
+	var conStr = fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s",
+		m.User, m.Password, m.Database, m.Host, m.Port,
+	)
+
+	m.db, m.err = sql.Open("postgres", conStr)
 	if m.err != nil {
 		log.Println("Open Error:", m.err.Error())
 	} else {
