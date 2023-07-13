@@ -11,8 +11,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// MyDB MyDB
-type MyDB struct {
+// PgDB PgDB
+type PgDB struct {
 	Host     string
 	User     string
 	Port     string
@@ -23,7 +23,7 @@ type MyDB struct {
 }
 
 // Connect Connect
-func (m *MyDB) Connect() bool {
+func (m *PgDB) Connect() bool {
 	var rtn = false
 	var conStr = fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s",
 		m.User, m.Password, m.Database, m.Host, m.Port,
@@ -44,31 +44,31 @@ func (m *MyDB) Connect() bool {
 }
 
 // GetNewDatabase GetNewDatabase
-func (m *MyDB) GetNewDatabase() di.Database {
+func (m *PgDB) GetNewDatabase() di.Database {
 	return m
 }
 
 // BeginTransaction BeginTransaction
-func (m *MyDB) BeginTransaction() di.Transaction {
+func (m *PgDB) BeginTransaction() di.Transaction {
 	var trans di.Transaction
-	var myTrans MyDbTx
+	var PgTrans PgDbTx
 	tx, err := m.db.Begin()
 	if err != nil {
 		log.Println("Transaction Error:", err.Error())
 	} else {
-		myTrans.Tx = tx
+		PgTrans.Tx = tx
 	}
-	trans = &myTrans
+	trans = &PgTrans
 	return trans
 }
 
 // Test Test
-func (m *MyDB) Test(query string, args ...interface{}) *di.DbRow {
+func (m *PgDB) Test(query string, args ...interface{}) *di.DbRow {
 	return m.Get(query, args...)
 }
 
 // Insert Insert
-func (m *MyDB) Insert(query string, args ...interface{}) (bool, int64) {
+func (m *PgDB) Insert(query string, args ...interface{}) (bool, int64) {
 	var success = false
 	var id int64 = -1
 	var stmtIns *sql.Stmt
@@ -93,7 +93,7 @@ func (m *MyDB) Insert(query string, args ...interface{}) (bool, int64) {
 }
 
 // Update Update
-func (m *MyDB) Update(query string, args ...interface{}) bool {
+func (m *PgDB) Update(query string, args ...interface{}) bool {
 	var success = false
 	var stmtUp *sql.Stmt
 	stmtUp, m.err = m.db.Prepare(query)
@@ -118,7 +118,7 @@ func (m *MyDB) Update(query string, args ...interface{}) bool {
 }
 
 // Get Get
-func (m *MyDB) Get(query string, args ...interface{}) *di.DbRow {
+func (m *PgDB) Get(query string, args ...interface{}) *di.DbRow {
 	var rtn di.DbRow
 	stmtGet, err := m.db.Prepare(query)
 	if err != nil {
@@ -165,7 +165,7 @@ func (m *MyDB) Get(query string, args ...interface{}) *di.DbRow {
 }
 
 // GetList GetList
-func (m *MyDB) GetList(query string, args ...interface{}) *di.DbRows {
+func (m *PgDB) GetList(query string, args ...interface{}) *di.DbRows {
 	var rtn di.DbRows
 	stmtGet, err := m.db.Prepare(query)
 	if err != nil {
@@ -213,7 +213,7 @@ func (m *MyDB) GetList(query string, args ...interface{}) *di.DbRows {
 }
 
 // Delete Delete
-func (m *MyDB) Delete(query string, args ...interface{}) bool {
+func (m *PgDB) Delete(query string, args ...interface{}) bool {
 	var success = false
 	var stmt *sql.Stmt
 	stmt, m.err = m.db.Prepare(query)
@@ -240,7 +240,7 @@ func (m *MyDB) Delete(query string, args ...interface{}) bool {
 }
 
 // Close Close
-func (m *MyDB) Close() bool {
+func (m *PgDB) Close() bool {
 	var rtn = false
 	err := m.db.Close()
 	if err != nil {
@@ -251,4 +251,4 @@ func (m *MyDB) Close() bool {
 	return rtn
 }
 
-//GO111MODULE=on go mod init github.com/Ulbora/dbinterface_mysql
+//GO111MODULE=on go mod init github.com/Ulbora/dbinterface_Pgsql

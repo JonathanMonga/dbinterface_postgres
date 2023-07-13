@@ -11,8 +11,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// MyDBMock MyDBMock
-type MyDBMock struct {
+// PgDBMock PgDBMock
+type PgDBMock struct {
 	Host     string
 	User     string
 	Password string
@@ -114,33 +114,33 @@ type MyDBMock struct {
 }
 
 // Connect Connect
-func (m *MyDBMock) Connect() bool {
+func (m *PgDBMock) Connect() bool {
 	return m.MockConnectSuccess
 }
 
 // GetNewDatabase GetNewDatabase
-func (m *MyDBMock) GetNewDatabase() di.Database {
+func (m *PgDBMock) GetNewDatabase() di.Database {
 	var db di.Database
 	db = m
 	return db
 }
 
 // BeginTransaction BeginTransaction
-func (m *MyDBMock) BeginTransaction() di.Transaction {
+func (m *PgDBMock) BeginTransaction() di.Transaction {
 	var trans di.Transaction
-	var mtx MyDbTxMock
-	mtx.MyDBMock = m
+	var mtx PgDbTxMock
+	mtx.PgDBMock = m
 	trans = &mtx
 	return trans
 }
 
 // Test Test
-func (m *MyDBMock) Test(query string, args ...interface{}) *di.DbRow {
+func (m *PgDBMock) Test(query string, args ...interface{}) *di.DbRow {
 	return m.MockTestRow
 }
 
 // Insert Insert
-func (m *MyDBMock) Insert(query string, args ...interface{}) (bool, int64) {
+func (m *PgDBMock) Insert(query string, args ...interface{}) (bool, int64) {
 	var rtn = false
 	var id int64
 	if !m.mockInsertSuccess1Used {
@@ -164,7 +164,7 @@ func (m *MyDBMock) Insert(query string, args ...interface{}) (bool, int64) {
 }
 
 // Update Update
-func (m *MyDBMock) Update(query string, args ...interface{}) bool {
+func (m *PgDBMock) Update(query string, args ...interface{}) bool {
 	var rtn = false
 	if !m.mockUpdateSuccess1Used {
 		m.mockUpdateSuccess1Used = true
@@ -183,7 +183,7 @@ func (m *MyDBMock) Update(query string, args ...interface{}) bool {
 }
 
 // Get Get
-func (m *MyDBMock) Get(query string, args ...interface{}) *di.DbRow {
+func (m *PgDBMock) Get(query string, args ...interface{}) *di.DbRow {
 	//return m.MockRow
 	var rtn *di.DbRow
 	if !m.mockRow1Used {
@@ -215,7 +215,7 @@ func (m *MyDBMock) Get(query string, args ...interface{}) *di.DbRow {
 }
 
 // GetList GetList
-func (m *MyDBMock) GetList(query string, args ...interface{}) *di.DbRows {
+func (m *PgDBMock) GetList(query string, args ...interface{}) *di.DbRows {
 	var rtn *di.DbRows
 	if !m.mockRows1Used {
 		m.mockRows1Used = true
@@ -246,7 +246,7 @@ func (m *MyDBMock) GetList(query string, args ...interface{}) *di.DbRows {
 }
 
 // Delete Delete
-func (m *MyDBMock) Delete(query string, args ...interface{}) bool {
+func (m *PgDBMock) Delete(query string, args ...interface{}) bool {
 	var rtn = false
 	if !m.mockDeleteSuccess1Used {
 		m.mockDeleteSuccess1Used = true
@@ -265,6 +265,6 @@ func (m *MyDBMock) Delete(query string, args ...interface{}) bool {
 }
 
 // Close Close
-func (m *MyDBMock) Close() bool {
+func (m *PgDBMock) Close() bool {
 	return m.MockCloseSuccess
 }

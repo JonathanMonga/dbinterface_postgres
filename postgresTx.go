@@ -5,13 +5,13 @@ import (
 	"log"
 )
 
-// MyDbTx MyDbTx
-type MyDbTx struct {
+// PgDbTx PgDbTx
+type PgDbTx struct {
 	Tx *sql.Tx
 }
 
 // Insert Insert
-func (t *MyDbTx) Insert(query string, args ...interface{}) (bool, int64) {
+func (t *PgDbTx) Insert(query string, args ...interface{}) (bool, int64) {
 	var success = false
 	var id int64 = -1
 	//var stmtIns *sql.Stmt
@@ -32,7 +32,7 @@ func (t *MyDbTx) Insert(query string, args ...interface{}) (bool, int64) {
 }
 
 // Update Update
-func (t *MyDbTx) Update(query string, args ...interface{}) bool {
+func (t *PgDbTx) Update(query string, args ...interface{}) bool {
 	var success = false
 	stmtIns, err := t.Tx.Prepare(query)
 	if err != nil {
@@ -50,7 +50,7 @@ func (t *MyDbTx) Update(query string, args ...interface{}) bool {
 }
 
 // Delete Delete
-func (t *MyDbTx) Delete(query string, args ...interface{}) bool {
+func (t *PgDbTx) Delete(query string, args ...interface{}) bool {
 	var success = false
 	stmtIns, err := t.Tx.Prepare(query)
 	if err != nil {
@@ -70,7 +70,7 @@ func (t *MyDbTx) Delete(query string, args ...interface{}) bool {
 }
 
 // Commit Commit
-func (t *MyDbTx) Commit() bool {
+func (t *PgDbTx) Commit() bool {
 	var rtn = false
 	err := t.Tx.Commit()
 	if err != nil {
@@ -82,7 +82,7 @@ func (t *MyDbTx) Commit() bool {
 }
 
 // Rollback Rollback
-func (t *MyDbTx) Rollback() bool {
+func (t *PgDbTx) Rollback() bool {
 	var rtn = false
 	err := t.Tx.Rollback()
 	if err != nil {
